@@ -11,6 +11,8 @@ namespace InventoryDatabaseCore
         static IConfigurationRoot _configuration;
         public InventoryDbContext() : base() { }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryColor> CategoryColors { get; set; }
         public InventoryDbContext(DbContextOptions options)
         : base(options)
         {
