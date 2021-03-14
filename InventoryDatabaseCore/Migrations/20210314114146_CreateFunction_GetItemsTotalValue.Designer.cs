@@ -4,14 +4,16 @@ using InventoryDatabaseCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryDatabaseCore.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210314114146_CreateFunction_GetItemsTotalValue")]
+    partial class CreateFunction_GetItemsTotalValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,29 +103,6 @@ namespace InventoryDatabaseCore.Migrations
                     b.ToView("ItemsForListing");
                 });
 
-            modelBuilder.Entity("InventoryModels.Dtos.GetItemsTotalValueDto", b =>
-                {
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("PurchasePrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("TotalValue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.ToView("GetItemsTotalValues");
-                });
-
             modelBuilder.Entity("InventoryModels.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -157,48 +136,6 @@ namespace InventoryDatabaseCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(2021, 3, 14, 15, 4, 3, 800, DateTimeKind.Local).AddTicks(6983),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Fantasy"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedDate = new DateTime(2021, 3, 14, 15, 4, 3, 803, DateTimeKind.Local).AddTicks(8533),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Sci/Fi"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedDate = new DateTime(2021, 3, 14, 15, 4, 3, 803, DateTimeKind.Local).AddTicks(8628),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Horror"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedDate = new DateTime(2021, 3, 14, 15, 4, 3, 803, DateTimeKind.Local).AddTicks(8635),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Comedy"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedDate = new DateTime(2021, 3, 14, 15, 4, 3, 803, DateTimeKind.Local).AddTicks(8638),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Drama"
-                        });
                 });
 
             modelBuilder.Entity("InventoryModels.Item", b =>

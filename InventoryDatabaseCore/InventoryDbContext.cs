@@ -14,8 +14,10 @@ namespace InventoryDatabaseCore
         public DbSet<Item> Items { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryColor> CategoryColors { get; set; }
-        DbSet<Genre> Genres { get; set; }
+        public DbSet<Genre> Genres { get; set; }
         public DbSet<GetItemsForListingDto> ItemsForListing { get; set; }
+        public DbSet<AllItemsPipeDelimitedStringDto> AllItemsOutput { get; set; }
+        public DbSet<GetItemsTotalValueDto> GetItemsTotalValues { get; set; }
         public InventoryDbContext(DbContextOptions options)
         : base(options)
         {
@@ -30,6 +32,60 @@ namespace InventoryDatabaseCore
             {
                 x.HasNoKey();
                 x.ToView("ItemsForListing");
+            });
+            modelBuilder.Entity<AllItemsPipeDelimitedStringDto>(x =>
+            {
+                x.HasNoKey();
+                x.ToView("AllItemsOutput");
+            });
+            modelBuilder.Entity<GetItemsTotalValueDto>(x =>
+            {
+                x.HasNoKey();
+                x.ToView("GetItemsTotalValues");
+            });
+            modelBuilder.Entity<Genre>(x => {
+                x.HasData(
+                new Genre()
+                {
+                    Id = 1,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false,
+                    Name = "Fantasy"
+                },
+                new Genre()
+                {
+                    Id = 2,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false,
+                    Name = "Sci/Fi"
+                },
+                new Genre()
+                {
+                    Id = 3,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false,
+                    Name = "Horror"
+                },
+                new Genre()
+                {
+                    Id = 4,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false,
+                    Name = "Comedy"
+                },
+                new Genre()
+                {
+                    Id = 5,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false,
+                    Name = "Drama"
+                }
+                );
             });
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

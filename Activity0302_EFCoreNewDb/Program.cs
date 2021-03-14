@@ -16,12 +16,10 @@ namespace Activity0302_EFCoreNewDb
         static void Main(string[] args)
         {
             BuildOptions();
-            DeleteAllItems();
-            InsertItems();
-            UpdateItems();
             ListInventory();
             GetItemsForListing();
-            GetItemsForListingWithParams();
+            AllActiveItemsPipeDelimitedString();
+            GetItemsTotalValues();
         }
         static void BuildOptions()
         {
@@ -111,5 +109,31 @@ namespace Activity0302_EFCoreNewDb
                 }
             }
         }
+        static void AllActiveItemsPipeDelimitedString()
+        {
+            using (var db = new InventoryDbContext(_optionsBuilder.Options))
+            {
+                var isActiveParm = new SqlParameter("IsActive", 1);
+                var result = db.AllItemsOutput.FromSqlRaw("SELECT [dbo].[ItemNamesPipeDelimitedString] (@IsActive) AllItems", isActiveParm).FirstOrDefault();
+                Console.WriteLine($"All active Items: {result.AllItems}");
+            }
+        }
+        static void GetItemsTotalValues()
+        {
+            using (var db = new InventoryDbContext(_optionsBuilder.Options))
+            {
+                var isActiveParm = new SqlParameter("IsActive", 1);
+                var result = db.GetItemsTotalValues
+                .FromSqlRaw("SELECT * from [dbo].[GetItemsTotalValue] (@IsActive)", isActiveParm).ToList();
+                foreach (var item in result)
+                {
+                    Console.WriteLine($"New Item] {item.Id,-10}" +
+                    $"|{item.Name,-50}" +
+                   $"|{item.Quantity,-4}" +
+                   $"|{item.TotalValue,-5}");
+                }
+            }
+        }
     }
 }
+
