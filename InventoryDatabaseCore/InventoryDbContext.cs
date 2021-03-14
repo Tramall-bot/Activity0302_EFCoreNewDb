@@ -1,4 +1,5 @@
 ﻿using InventoryModels;
+using InventoryModels.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,6 +15,7 @@ namespace InventoryDatabaseCore
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryColor> CategoryColors { get; set; }
         DbSet<Genre> Genres { get; set; }
+        public DbSet<GetItemsForListingDto> ItemsForListing { get; set; }
         public InventoryDbContext(DbContextOptions options)
         : base(options)
         {
@@ -24,6 +26,11 @@ namespace InventoryDatabaseCore
              .HasIndex(ig => new { ig.ItemId, ig.GenreId })
              .IsUnique()
              .IsClustered(false);
+            modelBuilder.Entity<GetItemsForListingDto>(x =>
+            {
+                x.HasNoKey();
+                x.ToView("ItemsForListing");
+            });
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,5 +1,6 @@
 ﻿using InventoryDatabaseCore;
 using InventoryModels;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -19,6 +20,8 @@ namespace Activity0302_EFCoreNewDb
             InsertItems();
             UpdateItems();
             ListInventory();
+            GetItemsForListing();
+            GetItemsForListingWithParams();
         }
         static void BuildOptions()
         {
@@ -82,6 +85,30 @@ namespace Activity0302_EFCoreNewDb
             {
                 var items = db.Items.Take(5).OrderBy(x => x.Name).ToList();
                 items.ForEach(x => Console.WriteLine($"New Item: {x.Name}"));
+            }
+        }
+        static void GetItemsForListing()
+        {
+            using (var db = new InventoryDbContext(_optionsBuilder.Options))
+            {
+                var results = db.ItemsForListing.FromSqlRaw("EXECUTE dbo.GetItemsForListing").ToList();
+                foreach (var item in results)
+                {
+                    Console.WriteLine($"ITEM {item.Name} - {item.Description}");
+                }
+            }
+        }
+        static void GetItemsForListingWithParams()
+        {
+            var minDate = new SqlParameter("minDate", new DateTime(2020, 1, 1));
+            var maxDate = new SqlParameter("maxDate", new DateTime(2021, 1, 1));
+            using (var db = new InventoryDbContext(_optionsBuilder.Options))
+            {
+                var results = db.ItemsForListing.FromSqlRaw("EXECUTE dbo.GetItemsForListing @minDate, @maxDate", minDate, maxDate).ToList();
+                foreach (var item in results)
+                {
+                    Console.WriteLine($"ITEM {item.Name} - {item.Description}");
+                }
             }
         }
     }
