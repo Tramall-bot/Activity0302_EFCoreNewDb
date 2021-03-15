@@ -1,5 +1,6 @@
 ﻿using InventoryModels;
 using InventoryModels.Dtos;
+using InventoryModels.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -18,6 +19,9 @@ namespace InventoryDatabaseCore
         public DbSet<GetItemsForListingDto> ItemsForListing { get; set; }
         public DbSet<AllItemsPipeDelimitedStringDto> AllItemsOutput { get; set; }
         public DbSet<GetItemsTotalValueDto> GetItemsTotalValues { get; set; }
+        public DbSet<ItemsWithGenresDto> ItemsWithGenres { get; set; }
+
+
         public InventoryDbContext(DbContextOptions options)
         : base(options)
         {
@@ -43,49 +47,55 @@ namespace InventoryDatabaseCore
                 x.HasNoKey();
                 x.ToView("GetItemsTotalValues");
             });
+            var createdDate = new DateTime(2020, 01, 01);
             modelBuilder.Entity<Genre>(x => {
                 x.HasData(
-                new Genre()
-                {
-                    Id = 1,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true,
-                    IsDeleted = false,
-                    Name = "Fantasy"
-                },
-                new Genre()
-                {
-                    Id = 2,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true,
-                    IsDeleted = false,
-                    Name = "Sci/Fi"
-                },
-                new Genre()
-                {
-                    Id = 3,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true,
-                    IsDeleted = false,
-                    Name = "Horror"
-                },
-                new Genre()
-                {
-                    Id = 4,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true,
-                    IsDeleted = false,
-                    Name = "Comedy"
-                },
-                new Genre()
-                {
-                    Id = 5,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true,
-                    IsDeleted = false,
-                    Name = "Drama"
-                }
+                    new Genre()
+                    {
+                        Id = 1,
+                        CreatedDate = createdDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Fantasy"
+                    },
+                    new Genre()
+                    {
+                        Id = 2,
+                        CreatedDate = createdDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Sci/Fi"
+                    },
+                    new Genre()
+                    {
+                        Id = 3,
+                        CreatedDate = createdDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Horror"
+                    },
+                    new Genre()
+                    {
+                        Id = 4,
+                        CreatedDate = createdDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Comedy"
+                    },
+                    new Genre()
+                    {
+                        Id = 5,
+                        CreatedDate = createdDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Drama"
+                    }
                 );
+            });
+            modelBuilder.Entity<ItemsWithGenresDto>(x =>
+            {
+                x.HasNoKey();
+                x.ToView("ItemsWithGenres");
             });
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
